@@ -71,7 +71,8 @@ SaveDir = "../graph_data/geometry-{}directed".format('' if Directed else 'un')
 GeometryFeatsPath = '../graph_data/geometry_feats-{}directed.pkl'.format('' if Directed else 'un')
 
 if os.path.exists(SaveDir):
-    raise Exception("dir already exists")
+    # raise Exception("dir already exists")
+    pass
 else:
     os.mkdir(SaveDir)
 
@@ -83,10 +84,11 @@ num_images = len(all_feats)
 print("Loaded %d images...." % num_images)
 
 #%%
-p = Pool(20)
-print("[INFO] Start")
-results = p.map(build_geometry_graph, all_feats.keys())
-print("Done")
+if __name__ == '__main__':
+    p = Pool(20)
+    print("[INFO] Start")
+    results = p.map(build_geometry_graph, all_feats.keys())
+    print("Done")
 
 #for key in all_feats.keys():
 #    build_geometry_graph(key)

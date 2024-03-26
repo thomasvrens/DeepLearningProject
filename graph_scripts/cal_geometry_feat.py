@@ -138,6 +138,8 @@ def cal_geometry_feats(id):
         print('{} / {}'.format(counter.value, NumImages))
     return id, feats
 
+
+
 NumFeats = 8
 Directed = True
 SavePath = '../graph_data/geometry_feats-{}directed.pkl'.format('' if Directed else 'un')
@@ -148,15 +150,16 @@ BoxInfo = dict(BoxInfo)
 NumImages = len(BoxInfo)
 counter = Counter()
 
-p = Pool(20)
-print("[INFO] Start")
-results = p.map(cal_geometry_feats, BoxInfo.keys())
-all_feats = {res[0]: res[1] for res in results}
-print("[INFO] Finally %d processed" % len(all_feats))
+if __name__ == '__main__':
+    p = Pool(20)
+    print("[INFO] Start")
+    results = p.map(cal_geometry_feats, BoxInfo.keys())
+    all_feats = {res[0]: res[1] for res in results}
+    print("[INFO] Finally %d processed" % len(all_feats))
 
-with open(SavePath, 'wb') as f:
-    pickle.dump(all_feats, f)
-print("saved")
+    with open(SavePath, 'wb') as f:
+        pickle.dump(all_feats, f)
+    print("saved")
 
 
 
