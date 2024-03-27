@@ -334,11 +334,15 @@ class RICO_ComponentDataset(Dataset):
             sg_data['rela_masks'][i, :rela_batch[i]['edges'].shape[0]] = 1
 
         return sg_data
-    
+
+
+def collate_fn(batch):
+    return batch[0]
 #%%
 class BlobFetcher():
     """Experimental class for prefetching blobs in a separate process."""
-    def __init__(self, split, dataloader, if_shuffle=False, num_workers = 4):
+    def __init__(self, split, dataloader, if_shuffle=False, num_workers = 0):
+        num_workers = 0
         """
         db is a list of tuples containing: imcrop_name, caption, bbox_feat of gt box, imname
         """
@@ -356,14 +360,24 @@ class BlobFetcher():
         2. wrapped: a new epoch, the split_ix and iterator have been updated in the get_minibatch_inds already.
         """
         # batch_size is 1, the merge is done in DataLoader class
+        # self.split_loader = iter(data.DataLoader(dataset=self.dataloader,
+        #                                     batch_size=1,
+        #                                     sampler=SubsetSampler(self.dataloader.split_ix[self.split][self.dataloader.iterators[self.split]:]),
+        #                                     shuffle=False,
+        #                                     pin_memory=True,
+        #                                     num_workers=self.num_workers,#1, # 4 is usually enough
+        #                                     worker_init_fn=None,
+        #                                     collate_fn=lambda x: x[0]))
+
         self.split_loader = iter(data.DataLoader(dataset=self.dataloader,
-                                            batch_size=1,
-                                            sampler=SubsetSampler(self.dataloader.split_ix[self.split][self.dataloader.iterators[self.split]:]),
-                                            shuffle=False,
-                                            pin_memory=True,
-                                            num_workers=self.num_workers,#1, # 4 is usually enough
-                                            worker_init_fn=None,
-                                            collate_fn=lambda x: x[0]))
+                                                 batch_size=1,
+                                                 sampler=SubsetSampler(self.dataloader.split_ix[self.split][
+                                                                       self.dataloader.iterators[self.split]:]),
+                                                 shuffle=False,
+                                                 pin_memory=True,
+                                                 num_workers=self.num_workers,
+                                                 worker_init_fn=None,
+                                                 collate_fn=collate_fn))  # Updated to use the named function
 
     def _get_next_minibatch_inds(self):
         max_index = len(self.dataloader.split_ix[self.split])
@@ -382,12 +396,25 @@ class BlobFetcher():
 
         return ix, wrapped
     
+    # def get(self):
+    #     if not hasattr(self, 'split_loader'):
+    #         self.reset()
+    #
+    #     ix, wrapped = self._get_next_minibatch_inds()
+    #     tmp = self.split_loader.next()
+    #     if wrapped:
+    #         self.reset()
+    #
+    #     assert tmp[-1] == ix, "ix not equal"
+    #
+    #     return tmp + [wrapped]
     def get(self):
         if not hasattr(self, 'split_loader'):
             self.reset()
 
         ix, wrapped = self._get_next_minibatch_inds()
-        tmp = self.split_loader.next()
+        # Use the next() function instead of .next() method
+        tmp = next(self.split_loader)
         if wrapped:
             self.reset()
 

@@ -136,7 +136,7 @@ def main(opt):
             epoch_done = False
         
         # Load a batch of data from train split
-        data =  loader.get_batch('train')
+        data = loader.get_batch('train')
         images = data['images'].cuda()
         sg_data = {key: torch.from_numpy(data['sg_data'][key]).cuda() for key in data['sg_data']}
         
@@ -262,7 +262,7 @@ def perform_tests(model, loader, boundingBoxes,  save_dir, ep):
     
            
     with open(save_file, 'a') as f:
-        f.write('\n\ep: {}\n'.format(ep))
+        f.write('\nep: {}\n'.format(ep))
         f.write('Model name: {}\n'.format(save_dir))
         f.write('GAlleryOnly Flag: {}\n'.format(onlyGallery))     
         f.write('overallMeanClassIou =  ' + str([ '{:.3f}'.format(x) for x in overallMeanClassIou]) + '\n')

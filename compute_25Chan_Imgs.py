@@ -66,8 +66,10 @@ def get_classwise_channel_image(id):
     
     
 save_dir = 'data/25ChanImages/'
+# save_dir = 'DeepLearningProject/data/25ChanImages/'
 if os.path.exists(save_dir):
-    raise Exception("dir already exists")
+    pass
+   #raise Exception("dir already exists")
 else:
     os.mkdir(save_dir) 
 
@@ -76,10 +78,11 @@ with open('data/rico_box_info.pkl', 'rb') as f:
 ids = list(info.keys())     
 counter = Counter()
 
-p = Pool(20)
-print("[INFO] Start")
-results = p.map(get_classwise_channel_image, info.keys())
-print("Done")
+if __name__ == '__main__':
+    p = Pool(20)
+    print("[INFO] Start")
+    results = p.map(get_classwise_channel_image, info.keys())
+    print("Done")
 
 
 #for i in range (1):

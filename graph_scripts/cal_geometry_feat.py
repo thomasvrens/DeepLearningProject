@@ -144,7 +144,7 @@ NumFeats = 8
 Directed = True
 SavePath = '../graph_data/geometry_feats-{}directed.pkl'.format('' if Directed else 'un')
 
-BoxInfo = pickle.load(open('../data/rico_box_info.pkl', 'rb')) 
+BoxInfo = pickle.load(open('../data/rico_box_info.pkl', 'rb'))
 BoxInfo = dict(BoxInfo)
 
 NumImages = len(BoxInfo)

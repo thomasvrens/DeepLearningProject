@@ -71,8 +71,9 @@ SaveDir = "../graph_data/geometry-{}directed".format('' if Directed else 'un')
 GeometryFeatsPath = '../graph_data/geometry_feats-{}directed.pkl'.format('' if Directed else 'un')
 
 if os.path.exists(SaveDir):
-    # raise Exception("dir already exists")
+    #os.mkdir(SaveDir)
     pass
+    #raise Exception("dir already exists")
 else:
     os.mkdir(SaveDir)
 
@@ -90,6 +91,6 @@ if __name__ == '__main__':
     results = p.map(build_geometry_graph, all_feats.keys())
     print("Done")
 
-#for key in all_feats.keys():
-#    build_geometry_graph(key)
+    # for key in all_feats.keys():
+    #    build_geometry_graph(key)
 

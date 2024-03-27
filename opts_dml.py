@@ -32,7 +32,7 @@ def parse_opt():
     # Directories
     parser.add_argument('--img_dir', type=str, default='/mnt/amber/scratch/Dipu/RICO/semantic_annotations/',  
                     help='path to the semantic UI images of RICO dataset')
-    parser.add_argument('--Channel25_img_dir', type=str, default='/mnt/amber/scratch/Dipu/RICO/25ChannelImages',  
+    parser.add_argument('--Channel25_img_dir', type=str, default='data/25ChanImages',
                     help='path to the precomputed 25 Channel image representation of RICO UIs')
     
     
