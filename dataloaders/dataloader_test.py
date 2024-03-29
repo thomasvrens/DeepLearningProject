@@ -129,7 +129,7 @@ class RICO_ComponentDataset(Dataset):
         
         self._prefetch_process = {} # The three prefetch process 
         for split in self.iterators.keys():
-            self._prefetch_process[split] = BlobFetcher(split, self, split=='train', num_workers = 4)
+            self._prefetch_process[split] = BlobFetcher(split, self, split=='train', num_workers = 0)
         
         def cleanup():
             print('Terminating BlobFetcher')
@@ -366,7 +366,11 @@ class BlobFetcher():
             self.reset()
 
         ix, wrapped = self._get_next_minibatch_inds()
-        tmp = self.split_loader.next()
+        #print('split loader', dir(self.split_loader))
+        #print('wrapped', wrapped)
+        #print('ix', ix)
+        ### tmp = self.split_loader.next()
+        tmp = next(self.split_loader)
         if wrapped:
             self.reset()
 
